@@ -127,8 +127,8 @@ int main(void)
 
   // Calcular la frecuencia fundamental
   float32_t fundamental_freq = (SAMPLE_RATE / FFT_SIZE) * testIndex;
-  // Imprimir la frecuencia fundamental
-   printf("Frecuencia fundamental: %.2f Hz\n", fundamental_freq);
+
+
 
   if (testIndex !=  refIndex)
   {
@@ -151,10 +151,16 @@ int main(void)
       printf("%0.1f\r\n", 100*testInput_f32_10khz[i]);
     }
 #endif
+
+
+    // Imprimir la frecuencia fundamental
+    printf("Frecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
+
     for(;;);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
   }
   /* USER CODE END 3 */
 }

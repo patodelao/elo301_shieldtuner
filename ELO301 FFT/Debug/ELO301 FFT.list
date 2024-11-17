@@ -27,29 +27,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0000e1e0  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00013d2b  00000000  00000000  0000e210  2**0
+ 12 .debug_info   00013d31  00000000  00000000  0000e210  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000029ca  00000000  00000000  00021f3b  2**0
+ 13 .debug_abbrev 000029c9  00000000  00000000  00021f41  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00000a58  00000000  00000000  00024908  2**3
+ 14 .debug_aranges 00000a58  00000000  00000000  00024910  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 0000072f  00000000  00000000  00025360  2**0
+ 15 .debug_rnglists 0000072f  00000000  00000000  00025368  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00022c0d  00000000  00000000  00025a8f  2**0
+ 16 .debug_macro  00022c0d  00000000  00000000  00025a97  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000e24e  00000000  00000000  0004869c  2**0
+ 17 .debug_line   0000e24c  00000000  00000000  000486a4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000d1dc3  00000000  00000000  000568ea  2**0
+ 18 .debug_str    000d1dc3  00000000  00000000  000568f0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      000000b8  00000000  00000000  001286ad  2**0
+ 19 .comment      000000b8  00000000  00000000  001286b3  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000389c  00000000  00000000  00128768  2**2
+ 20 .debug_frame  0000389c  00000000  00000000  0012876c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006e  00000000  00000000  0012c004  2**0
+ 21 .debug_line_str 0000006e  00000000  00000000  0012c008  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_loc    00002baf  00000000  00000000  0012c072  2**0
+ 22 .debug_loc    00002baf  00000000  00000000  0012c076  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 23 .debug_ranges 00000138  00000000  00000000  0012ec21  2**0
+ 23 .debug_ranges 00000138  00000000  00000000  0012ec25  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1285,59 +1285,64 @@ int main(void)
  8000ef8:	ee07 3a90 	vmov	s15, r3
  8000efc:	eef8 7a67 	vcvt.f32.u32	s15, s15
  8000f00:	edc7 7a02 	vstr	s15, [r7, #8]
-  // Imprimir la frecuencia fundamental
-   printf("Frecuencia fundamental: %.2f Hz\n", fundamental_freq);
- 8000f04:	68b8      	ldr	r0, [r7, #8]
- 8000f06:	f7ff fb27 	bl	8000558 <__aeabi_f2d>
- 8000f0a:	4602      	mov	r2, r0
- 8000f0c:	460b      	mov	r3, r1
- 8000f0e:	481c      	ldr	r0, [pc, #112]	@ (8000f80 <main+0xd8>)
- 8000f10:	f004 fa66 	bl	80053e0 <iprintf>
+
+
 
   if (testIndex !=  refIndex)
- 8000f14:	4b19      	ldr	r3, [pc, #100]	@ (8000f7c <main+0xd4>)
- 8000f16:	681a      	ldr	r2, [r3, #0]
- 8000f18:	4b1a      	ldr	r3, [pc, #104]	@ (8000f84 <main+0xdc>)
- 8000f1a:	681b      	ldr	r3, [r3, #0]
- 8000f1c:	429a      	cmp	r2, r3
- 8000f1e:	d001      	beq.n	8000f24 <main+0x7c>
+ 8000f04:	4b1d      	ldr	r3, [pc, #116]	@ (8000f7c <main+0xd4>)
+ 8000f06:	681a      	ldr	r2, [r3, #0]
+ 8000f08:	4b1d      	ldr	r3, [pc, #116]	@ (8000f80 <main+0xd8>)
+ 8000f0a:	681b      	ldr	r3, [r3, #0]
+ 8000f0c:	429a      	cmp	r2, r3
+ 8000f0e:	d001      	beq.n	8000f14 <main+0x6c>
   {
     status = ARM_MATH_TEST_FAILURE;
- 8000f20:	23fa      	movs	r3, #250	@ 0xfa
- 8000f22:	737b      	strb	r3, [r7, #13]
+ 8000f10:	23fa      	movs	r3, #250	@ 0xfa
+ 8000f12:	737b      	strb	r3, [r7, #13]
     for(uint16_t i=0; i<1024; i++)
     {
       printf("%u,%0.1f\r\n", i, testOutput[i]);
     }
 #else
     for(uint16_t i=0; i<1024; i+=2)
- 8000f24:	2300      	movs	r3, #0
- 8000f26:	81fb      	strh	r3, [r7, #14]
- 8000f28:	e015      	b.n	8000f56 <main+0xae>
+ 8000f14:	2300      	movs	r3, #0
+ 8000f16:	81fb      	strh	r3, [r7, #14]
+ 8000f18:	e015      	b.n	8000f46 <main+0x9e>
     {
       printf("%0.1f\r\n", 100*testInput_f32_10khz[i]);
- 8000f2a:	89fb      	ldrh	r3, [r7, #14]
- 8000f2c:	4a0f      	ldr	r2, [pc, #60]	@ (8000f6c <main+0xc4>)
- 8000f2e:	009b      	lsls	r3, r3, #2
- 8000f30:	4413      	add	r3, r2
- 8000f32:	edd3 7a00 	vldr	s15, [r3]
- 8000f36:	ed9f 7a14 	vldr	s14, [pc, #80]	@ 8000f88 <main+0xe0>
- 8000f3a:	ee67 7a87 	vmul.f32	s15, s15, s14
- 8000f3e:	ee17 0a90 	vmov	r0, s15
- 8000f42:	f7ff fb09 	bl	8000558 <__aeabi_f2d>
- 8000f46:	4602      	mov	r2, r0
- 8000f48:	460b      	mov	r3, r1
- 8000f4a:	4810      	ldr	r0, [pc, #64]	@ (8000f8c <main+0xe4>)
- 8000f4c:	f004 fa48 	bl	80053e0 <iprintf>
+ 8000f1a:	89fb      	ldrh	r3, [r7, #14]
+ 8000f1c:	4a13      	ldr	r2, [pc, #76]	@ (8000f6c <main+0xc4>)
+ 8000f1e:	009b      	lsls	r3, r3, #2
+ 8000f20:	4413      	add	r3, r2
+ 8000f22:	edd3 7a00 	vldr	s15, [r3]
+ 8000f26:	ed9f 7a17 	vldr	s14, [pc, #92]	@ 8000f84 <main+0xdc>
+ 8000f2a:	ee67 7a87 	vmul.f32	s15, s15, s14
+ 8000f2e:	ee17 0a90 	vmov	r0, s15
+ 8000f32:	f7ff fb11 	bl	8000558 <__aeabi_f2d>
+ 8000f36:	4602      	mov	r2, r0
+ 8000f38:	460b      	mov	r3, r1
+ 8000f3a:	4813      	ldr	r0, [pc, #76]	@ (8000f88 <main+0xe0>)
+ 8000f3c:	f004 fa50 	bl	80053e0 <iprintf>
     for(uint16_t i=0; i<1024; i+=2)
- 8000f50:	89fb      	ldrh	r3, [r7, #14]
- 8000f52:	3302      	adds	r3, #2
- 8000f54:	81fb      	strh	r3, [r7, #14]
- 8000f56:	89fb      	ldrh	r3, [r7, #14]
- 8000f58:	f5b3 6f80 	cmp.w	r3, #1024	@ 0x400
- 8000f5c:	d3e5      	bcc.n	8000f2a <main+0x82>
+ 8000f40:	89fb      	ldrh	r3, [r7, #14]
+ 8000f42:	3302      	adds	r3, #2
+ 8000f44:	81fb      	strh	r3, [r7, #14]
+ 8000f46:	89fb      	ldrh	r3, [r7, #14]
+ 8000f48:	f5b3 6f80 	cmp.w	r3, #1024	@ 0x400
+ 8000f4c:	d3e5      	bcc.n	8000f1a <main+0x72>
     }
 #endif
+
+
+    // Imprimir la frecuencia fundamental
+    printf("Frecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
+ 8000f4e:	68b8      	ldr	r0, [r7, #8]
+ 8000f50:	f7ff fb02 	bl	8000558 <__aeabi_f2d>
+ 8000f54:	4602      	mov	r2, r0
+ 8000f56:	460b      	mov	r3, r1
+ 8000f58:	480c      	ldr	r0, [pc, #48]	@ (8000f8c <main+0xe4>)
+ 8000f5a:	f004 fa41 	bl	80053e0 <iprintf>
+
     for(;;);
  8000f5e:	bf00      	nop
  8000f60:	e7fd      	b.n	8000f5e <main+0xb6>
@@ -1349,10 +1354,10 @@ int main(void)
  8000f74:	20002000 	.word	0x20002000
  8000f78:	20002284 	.word	0x20002284
  8000f7c:	20003288 	.word	0x20003288
- 8000f80:	08007330 	.word	0x08007330
- 8000f84:	20002008 	.word	0x20002008
- 8000f88:	42c80000 	.word	0x42c80000
- 8000f8c:	08007354 	.word	0x08007354
+ 8000f80:	20002008 	.word	0x20002008
+ 8000f84:	42c80000 	.word	0x42c80000
+ 8000f88:	08007330 	.word	0x08007330
+ 8000f8c:	08007338 	.word	0x08007338
 
 08000f90 <SystemClock_Config>:
 /**
