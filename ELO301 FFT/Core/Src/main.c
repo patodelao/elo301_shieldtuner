@@ -140,10 +140,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-#if 0
+#if 1
     for(uint16_t i=0; i<1024; i++)
     {
-      printf("%u,%0.1f\r\n", i, testOutput[i]);
+      printf("\n\rfrec: %u, mag: %0.1f", (SAMPLE_RATE / FFT_SIZE)*i, testOutput[i]);
     }
 #else
     for(uint16_t i=0; i<1024; i+=2)
@@ -154,7 +154,7 @@ int main(void)
 
 
     // Imprimir la frecuencia fundamental
-    printf("Frecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
+    printf("\r\nFrecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
 
     for(;;);
     /* USER CODE END WHILE */
