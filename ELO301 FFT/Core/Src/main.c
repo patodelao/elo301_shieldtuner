@@ -1,3 +1,5 @@
+
+
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -36,6 +38,8 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define TEST_LENGTH_SAMPLES 2048
+#define SAMPLE_RATE 2048  // Frecuencia de muestreo en Hz
+#define FFT_SIZE 1024      // Tamaño de la FFT
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,7 +61,7 @@ uint32_t fftSize = 1024;
 uint32_t ifftFlag = 0;
 uint32_t doBitReverse = 1;
 
-/* Reference index at which max energy of bin ocuurs */
+/* Reference index at which max energy of bin occurs */
 uint32_t refIndex = 213, testIndex = 0;
 /* USER CODE END PV */
 
@@ -120,6 +124,12 @@ int main(void)
   /* Calculates maxValue and returns corresponding BIN value */
   arm_max_f32(testOutput, fftSize, &maxValue, &testIndex);
 
+
+  // Calcular la frecuencia fundamental
+  float32_t fundamental_freq = (SAMPLE_RATE / FFT_SIZE) * testIndex;
+  // Imprimir la frecuencia fundamental
+   printf("Frecuencia fundamental: %.2f Hz\n", fundamental_freq);
+
   if (testIndex !=  refIndex)
   {
     status = ARM_MATH_TEST_FAILURE;
@@ -138,7 +148,7 @@ int main(void)
 #else
     for(uint16_t i=0; i<1024; i+=2)
     {
-      printf("%0.1f\r\n", 100*testInput_f32_10khz2[i]);
+      printf("%0.1f\r\n", 100*testInput_f32_10khz[i]);
     }
 #endif
     for(;;);
