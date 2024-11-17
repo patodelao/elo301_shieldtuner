@@ -38,7 +38,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define TEST_LENGTH_SAMPLES 2048
-#define SAMPLE_RATE 2048  // Frecuencia de muestreo en Hz
+#define SAMPLE_RATE 2048  // tasa de muestreo
 #define FFT_SIZE 1024      // Tamaño de la FFT
 /* USER CODE END PD */
 
