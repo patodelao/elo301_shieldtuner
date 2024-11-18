@@ -1,5 +1,3 @@
-
-
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -44,7 +42,8 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+int dataindex=0;
+int data[3]= {1,2,3};
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -134,32 +133,31 @@ int main(void)
   {
     status = ARM_MATH_TEST_FAILURE;
   }
+  printf("\n\rShieldTuner\n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
-#if 1
-    for(uint16_t i=0; i<1024; i++)
+
+  /*  for(uint16_t i=0; i<1024; i++)
     {
       printf("\n\rfrec: %u, mag: %0.1f", (SAMPLE_RATE / FFT_SIZE)*i, testOutput[i]);
     }
-#else
-    for(uint16_t i=0; i<1024; i+=2)
-    {
-      printf("%0.1f\r\n", 100*testInput_f32_10khz[i]);
-    }
-#endif
+
 
 
     // Imprimir la frecuencia fundamental
     printf("\r\nFrecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
-
+*/
     for(;;);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+
 
   }
   /* USER CODE END 3 */
@@ -282,11 +280,38 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD4_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : B2_Pin */
+  GPIO_InitStruct.Pin = B2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(B2_GPIO_Port, &GPIO_InitStruct);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 2, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+void EXTI15_10_IRQHandler(void)
+{
+  HAL_GPIO_EXTI_IRQHandler(B1_Pin);
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == B1_Pin)
+  {
+	if(dataindex == 3){
+		dataindex = 0;
+	}
+    printf("\rBotón B1 presionado: %i \n", data[dataindex]);
+    dataindex++;
+    HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+
+  }
+}
+
 /* Add _write function to print over the uart */
 int _write( int file, char *ptr, int len )
 {
