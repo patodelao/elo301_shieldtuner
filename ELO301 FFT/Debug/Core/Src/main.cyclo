@@ -2,7 +2,6 @@
 ../Core/Src/main.c:175:6:SystemClock_Config	4
 ../Core/Src/main.c:225:13:MX_USART2_UART_Init	2
 ../Core/Src/main.c:260:13:MX_GPIO_Init	1
-../Core/Src/main.c:301:6:EXTI15_10_IRQHandler	1
-../Core/Src/main.c:306:6:HAL_GPIO_EXTI_Callback	3
-../Core/Src/main.c:321:5:_write	1
-../Core/Src/main.c:333:6:Error_Handler	1
+../Core/Src/main.c:305:6:HAL_GPIO_EXTI_Callback	3
+../Core/Src/main.c:320:5:_write	1
+../Core/Src/main.c:332:6:Error_Handler	1

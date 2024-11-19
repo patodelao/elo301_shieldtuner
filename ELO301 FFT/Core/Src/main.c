@@ -153,11 +153,11 @@ int main(void)
 		else {
 			printf("\r\n Frecuencia menor a referencia\n\r");
 			printf("\r\nFrecuencia fundamental: %.2f Hz, f_ref: %i  \n\n", fundamental_freq,data[dataindex]);}
-
+		HAL_Delay(1000);
     // Imprimir la frecuencia fundamental
     //printf("\r\nFrecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
 
-    for(;;);
+    //for(;;);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -291,6 +291,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B2_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 2, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
@@ -298,11 +302,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void EXTI15_10_IRQHandler(void)
-{
-  HAL_GPIO_EXTI_IRQHandler(B1_Pin);
-}
-
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if (GPIO_Pin == B1_Pin)
