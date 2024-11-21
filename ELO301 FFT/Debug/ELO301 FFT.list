@@ -1351,7 +1351,7 @@ int main(void)
  8000f78:	9100      	str	r1, [sp, #0]
  8000f7a:	4810      	ldr	r0, [pc, #64]	@ (8000fbc <main+0x114>)
  8000f7c:	f004 fb26 	bl	80055cc <iprintf>
-HAL_Delay(1000);
+		HAL_Delay(1000);
  8000f80:	f44f 707a 	mov.w	r0, #1000	@ 0x3e8
  8000f84:	f000 fb8c 	bl	80016a0 <HAL_Delay>
 		if (fundamental_freq > data[dataindex]) {
