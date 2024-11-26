@@ -4441,28 +4441,28 @@ LOAD C:/ST/STM32CubeIDE_1.16.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x0002286c      0x1e2 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
  .debug_macro   0x00022a4e      0x1d7 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
 
-.debug_line     0x00000000     0xe286
- .debug_line    0x00000000      0xacf ./Core/Src/main.o
- .debug_line    0x00000acf      0x77d ./Core/Src/stm32l4xx_hal_msp.o
- .debug_line    0x0000124c      0x7fa ./Core/Src/stm32l4xx_it.o
- .debug_line    0x00001a46      0x8b2 ./Core/Src/syscalls.o
- .debug_line    0x000022f8      0x583 ./Core/Src/sysmem.o
- .debug_line    0x0000287b      0x7b9 ./Core/Src/system_stm32l4xx.o
- .debug_line    0x00003034       0x7a ./Core/Startup/startup_stm32l452retx.o
- .debug_line    0x000030ae      0xb15 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
- .debug_line    0x00003bc3      0xcdd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
- .debug_line    0x000048a0      0xb4c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
- .debug_line    0x000053ec      0xc21 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
- .debug_line    0x0000600d      0xfcb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
- .debug_line    0x00006fd8     0x1431 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
- .debug_line    0x00008409     0x3202 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
- .debug_line    0x0000b60b      0x25a C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_const_structs.o)
- .debug_line    0x0000b865      0x243 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_common_tables.o)
- .debug_line    0x0000baa8      0x36f C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_max_f32.o)
- .debug_line    0x0000be17      0xf14 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_cfft_f32.o)
- .debug_line    0x0000cd2b      0x353 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_bitreversal2.o)
- .debug_line    0x0000d07e      0x531 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_cmplx_mag_f32.o)
- .debug_line    0x0000d5af      0xcd7 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_cfft_radix8_f32.o)
+.debug_line     0x00000000     0xe284
+ .debug_line    0x00000000      0xacd ./Core/Src/main.o
+ .debug_line    0x00000acd      0x77d ./Core/Src/stm32l4xx_hal_msp.o
+ .debug_line    0x0000124a      0x7fa ./Core/Src/stm32l4xx_it.o
+ .debug_line    0x00001a44      0x8b2 ./Core/Src/syscalls.o
+ .debug_line    0x000022f6      0x583 ./Core/Src/sysmem.o
+ .debug_line    0x00002879      0x7b9 ./Core/Src/system_stm32l4xx.o
+ .debug_line    0x00003032       0x7a ./Core/Startup/startup_stm32l452retx.o
+ .debug_line    0x000030ac      0xb15 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.o
+ .debug_line    0x00003bc1      0xcdd ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.o
+ .debug_line    0x0000489e      0xb4c ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_gpio.o
+ .debug_line    0x000053ea      0xc21 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.o
+ .debug_line    0x0000600b      0xfcb ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.o
+ .debug_line    0x00006fd6     0x1431 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc_ex.o
+ .debug_line    0x00008407     0x3202 ./Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.o
+ .debug_line    0x0000b609      0x25a C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_const_structs.o)
+ .debug_line    0x0000b863      0x243 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_common_tables.o)
+ .debug_line    0x0000baa6      0x36f C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_max_f32.o)
+ .debug_line    0x0000be15      0xf14 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_cfft_f32.o)
+ .debug_line    0x0000cd29      0x353 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_bitreversal2.o)
+ .debug_line    0x0000d07c      0x531 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_cmplx_mag_f32.o)
+ .debug_line    0x0000d5ad      0xcd7 C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC\libarm_cortexM4lf_math.a(arm_cfft_radix8_f32.o)
 
 .debug_str      0x00000000    0xd1e1c
  .debug_str     0x00000000    0xcc3b3 ./Core/Src/main.o

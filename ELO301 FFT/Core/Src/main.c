@@ -153,6 +153,7 @@ int main(void)
 		else {
 			printf("\r\n Frecuencia menor a referencia\n\r");
 			printf("\r\nFrecuencia fundamental: %.2f Hz, f_ref: %i  \n\n", fundamental_freq,data[dataindex]);}
+		//printf("\rIndex: %i \n", dataindex);
 		HAL_Delay(1000);
     // Imprimir la frecuencia fundamental
     //printf("\r\nFrecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
@@ -306,11 +307,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if (GPIO_Pin == B1_Pin)
   {
-	if(dataindex == 6){
+	  dataindex++;
+	if(dataindex == 6 ){
 		dataindex = 0;
 	}
+
+
     printf("\rBotón B1 presionado: %i \n", data[dataindex]);
-    dataindex++;
+
+
     HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
 
   }
