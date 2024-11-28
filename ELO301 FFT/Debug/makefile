@@ -60,8 +60,8 @@ all: main-build
 main-build: ELO301\ FFT.elf secondary-outputs
 
 # Tool invocations
-ELO301\ FFT.elf ELO301\ FFT.map: $(OBJS) $(USER_OBJS) C:\Users\alons\Desktop\Git\ ELO301\elo301_shieldtuner\ELO301\ FFT\STM32L452RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "ELO301 FFT.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\alons\Desktop\Git ELO301\elo301_shieldtuner\ELO301 FFT\STM32L452RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ELO301 FFT.map" -Wl,--gc-sections -static -L"C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+ELO301\ FFT.elf ELO301\ FFT.map: $(OBJS) $(USER_OBJS) C:\Users\alons\Desktop\Git\ ELO301\GIT\ profe\ELO301\ FFT\ (2)\ELO301\ FFT\ copia\ del\ profe\STM32L452RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ELO301 FFT.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\alons\Desktop\Git ELO301\GIT profe\ELO301 FFT (2)\ELO301 FFT copia del profe\STM32L452RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ELO301 FFT.map" -Wl,--gc-sections -static -L"C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

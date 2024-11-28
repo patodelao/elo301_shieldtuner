@@ -36,17 +36,16 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define TEST_LENGTH_SAMPLES 2048
-#define SAMPLE_RATE 2048  // tasa de muestreo
-#define FFT_SIZE 1024      // Tamaño de la FFT
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-int dataindex=0;
-int data[6]= {100,200,300,400,500,600};
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -56,11 +55,16 @@ UART_HandleTypeDef huart2;
 extern float32_t testInput_f32_10khz[TEST_LENGTH_SAMPLES];
 static float32_t testOutput[TEST_LENGTH_SAMPLES/2];
 
+
 uint32_t fftSize = 1024;
 uint32_t ifftFlag = 0;
 uint32_t doBitReverse = 1;
 
-/* Reference index at which max energy of bin occurs */
+
+static uint8_t adc_status = 0;
+uint16_t adc_value = 0;
+
+/* Reference index at which max energy of bin ocuurs */
 uint32_t refIndex = 213, testIndex = 0;
 /* USER CODE END PV */
 
@@ -68,6 +72,7 @@ uint32_t refIndex = 213, testIndex = 0;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -85,6 +90,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+  uint16_t sample_counter = 0;
 
   /* USER CODE END 1 */
 
@@ -107,12 +113,14 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   arm_status status;
   float32_t maxValue;
 
   status = ARM_MATH_SUCCESS;
 
+#if 0
   /* Process the data through the CFFT/CIFFT module */
   arm_cfft_f32(&arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse);
 
@@ -123,48 +131,65 @@ int main(void)
   /* Calculates maxValue and returns corresponding BIN value */
   arm_max_f32(testOutput, fftSize, &maxValue, &testIndex);
 
-
-  // Calcular la frecuencia fundamental
-  float32_t fundamental_freq = (SAMPLE_RATE / FFT_SIZE) * testIndex;
-
-
+  float32_t fundamental_freq = (TEST_LENGTH_SAMPLES / (TEST_LENGTH_SAMPLES/2)) * testIndex;
 
   if (testIndex !=  refIndex)
   {
     status = ARM_MATH_TEST_FAILURE;
   }
-  printf("\n\rShieldTuner\n\r");
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_ADC_Start_IT( &hadc1 );
+
+
+  //printf( "\r\nIndex: %u  Max value: %0.1f  Max frec: %0.1f \n", testIndex, maxValue , fundamental_freq);
+
+
 
   while (1)
   {
-
-  /*  for(uint16_t i=0; i<1024; i++)
+    if (adc_status == 1)
     {
-      printf("\n\rfrec: %u, mag: %0.1f", (SAMPLE_RATE / FFT_SIZE)*i, testOutput[i]);
-    }
-*/
-		if (fundamental_freq > data[dataindex]) {
-			printf("\r\n Frecuencia mayor a referencia\n\r");
-			printf("\r\nFrecuencia fundamental: %.2f Hz, f_ref: %i  \n\n", fundamental_freq,data[dataindex]);}
-		else {
-			printf("\r\n Frecuencia menor a referencia\n\r");
-			printf("\r\nFrecuencia fundamental: %.2f Hz, f_ref: %i  \n\n", fundamental_freq,data[dataindex]);}
-		//printf("\rIndex: %i \n", dataindex);
-		HAL_Delay(1000);
-    // Imprimir la frecuencia fundamental
-    //printf("\r\nFrecuencia fundamental: %.2f Hz\n\n", fundamental_freq);
+      /* Start filling testInput_f32_10khz buffer up to sample_counter is full */
+    	adc_value = HAL_ADC_GetValue( &hadc1 );
+        testInput_f32_10khz[sample_counter] = (float32_t)adc_value;
+        testInput_f32_10khz[sample_counter+1] = 0;
+      sample_counter+=2;
+      adc_status = 0;
+      /* Check if the input buffer is full */
+      if (sample_counter >= TEST_LENGTH_SAMPLES)
+      {
+        /* Process the data through the CFFT/CIFFT module */
+        arm_cfft_f32( &arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse );
 
-    //for(;;);
+        /* Process the data through the Complex Magnitude Module for
+         calculating the magnitude at each bin */
+        arm_cmplx_mag_f32( testInput_f32_10khz, testOutput, fftSize );
+
+        /* Calculates maxValue and returns corresponding BIN value */
+        arm_max_f32( testOutput, fftSize, &maxValue, &testIndex );
+
+        /* Reset the sample counter */
+        sample_counter = 0;
+
+        float32_t fundamental_freq = (TEST_LENGTH_SAMPLES / (TEST_LENGTH_SAMPLES/2)) * testIndex;
+
+        /* printf the buffer */
+        //for (int i = 0; i < TEST_LENGTH_SAMPLES; i++)
+        //{
+         // printf( "%0.1f\n", testInput_f32_10khz[i] );
+        //}
+        printf( "\r\nIndex: %u  Max value: %0.1f  Max frec: %0.1f \n", testIndex, maxValue , fundamental_freq);
+        //for(;;);
+
+      }
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-
-
   }
   /* USER CODE END 3 */
 }
@@ -216,6 +241,64 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC1_Init(void)
+{
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+
+  /** Common config
+  */
+  hadc1.Instance = ADC1;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV128;
+  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc1.Init.LowPowerAutoWait = DISABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc1.Init.OversamplingMode = DISABLE;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_12CYCLES_5;
+  sConfig.SingleDiff = ADC_SINGLE_ENDED;
+  sConfig.OffsetNumber = ADC_OFFSET_NONE;
+  sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
 }
 
 /**
@@ -271,6 +354,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(TP_GPIO_Port, TP_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
@@ -279,6 +365,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : TP_Pin */
+  GPIO_InitStruct.Pin = TP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(TP_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pin : LD4_Pin */
   GPIO_InitStruct.Pin = LD4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -286,39 +379,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD4_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : B2_Pin */
-  GPIO_InitStruct.Pin = B2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B2_GPIO_Port, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
-
 /* USER CODE BEGIN MX_GPIO_Init_2 */
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 2, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-  if (GPIO_Pin == B1_Pin)
-  {
-	  dataindex++;
-	if(dataindex == 6 ){
-		dataindex = 0;
-	}
-
-
-    printf("\rBotón B1 presionado: %i \n", data[dataindex]);
-
-
-    HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
-
-  }
+  adc_status =1;
+  HAL_GPIO_TogglePin(TP_GPIO_Port, TP_Pin);
 }
 
 /* Add _write function to print over the uart */
