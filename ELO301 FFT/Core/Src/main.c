@@ -87,7 +87,21 @@ static void MX_DFSDM1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void checkFrequencyAndSetLEDs(uint32_t detectedFreq, int refFreq) {
+    if (detectedFreq < refFreq - TOL) {
+        // Frecuencia menor a la referencia
+        HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
+    } else if (detectedFreq > refFreq + TOL) {
+        // Frecuencia mayor a la referencia
+        HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);
+    } else {
+        // Frecuencia dentro del umbral
+        HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
+        HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_SET);
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -154,92 +168,39 @@ if(HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1_filter0, (int32_t *)dfsdm_buffer, T
   /* USER CODE BEGIN WHILE */
   //HAL_ADC_Start_IT( &hadc1 );
 
-  while (1)
-  {
-	  if (mic_status == 1) {
-	  			  HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1_filter0, (int32_t*)dfsdm_buffer, TEST_LENGTH_SAMPLES/2);
+  while (1) {
+      if (mic_status == 1) {
+          // Procesar datos de la FFT
+          HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1_filter0, (int32_t *)dfsdm_buffer, TEST_LENGTH_SAMPLES / 2);
 
-	  			/* Fill testInput_f32_10khz buffer with dfsdm_buffer */
-	  			for (int i = 0; i < (TEST_LENGTH_SAMPLES/2); i++) {
-	  				mic_value = dfsdm_buffer[i];
-	  				testInput_f32_10khz[sample_counter++] = (float32_t) mic_value;
-	  				testInput_f32_10khz[sample_counter++] = 0;
-	  			}
+          for (int i = 0; i < (TEST_LENGTH_SAMPLES / 2); i++) {
+              mic_value = dfsdm_buffer[i];
+              testInput_f32_10khz[sample_counter++] = (float32_t)mic_value;
+              testInput_f32_10khz[sample_counter++] = 0;
+          }
 
+          mic_status = 0;
 
-	      mic_status = 0;
-	      if(sample_counter >= TEST_LENGTH_SAMPLES){
-	      	/* Process the data through the CFFT/CIFFT module */
-	      	  arm_cfft_f32(&arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse);
+          if (sample_counter >= TEST_LENGTH_SAMPLES) {
+              arm_cfft_f32(&arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse);
+              arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
+              arm_max_f32(testOutput + 1, (fftSize / 2) - 1, &maxValue, &testIndex);
 
-	      	  /* Process the data through the Complex Magnitude Module for
-	      	  calculating the magnitude at each bin */
-	      	  arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
+              uint32_t detectedFreq = (1000 * (testIndex + 1)) / 1024;
+              sample_counter = 0;
 
-	      	  /* Calculates maxValue and returns corresponding BIN value */
-	      	  arm_max_f32(testOutput+1, (fftSize/2)-1, &maxValue, &testIndex);
-	      	  sample_counter = 0;
-	      	  printf("Frecuencia %lu Hz  \r\n",  (1000*(testIndex+1))/1024);
-	      }
+              printf("Frecuencia referencia: %lu hz,  Frecuencia detectada: %lu Hz\r\n",data[dataindex], detectedFreq);
 
-    }
+              // Comparar con las frecuencias de referencia
+              checkFrequencyAndSetLEDs(detectedFreq, data[dataindex]);
 
-	  if (adc_status == 1)
-	      {
-	        /* Start filling testInput_f32_10khz buffer up to sample_counter is full */
-	        adc_value = HAL_ADC_GetValue( &hadc1 );}
-
-#if 1
-      testInput_f32_10khz[sample_counter++] = (float32_t)mic_value;//adc_value;
-      testInput_f32_10khz[sample_counter++] = 0;
-#else
-      sample_counter+=2;
-#endif
-      adc_status = 0;
-      /* Check if the input buffer is full */
-      if (sample_counter >= TEST_LENGTH_SAMPLES)
-      {
-        /* Process the data through the CFFT/CIFFT module */
-        arm_cfft_f32(&arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse);
-
-        /* Process the data through the Complex Magnitude Module for
-        calculating the magnitude at each bin */
-        arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
-
-        /* Calculates maxValue and returns corresponding BIN value */
-        arm_max_f32(testOutput+1, fftSize-1, &maxValue, &testIndex);
-
-        /* Reset the sample counter */
-        sample_counter = 0;
-
-        //printf( "%u\t%d\r\n", testIndex, (int)maxValue );
-
-
-
-        /*if ((1000*(testIndex+1))/1024 > testOutput[testIndex] + TOL) {
-                //HAL_GPIO_WritePin(LED_GPIO_PORT, LED_HIGH_FREQ_PIN, GPIO_PIN_SET);
-               //HAL_GPIO_WritePin(LED_GPIO_PORT, LED_LOW_FREQ_PIN, GPIO_PIN_RESET);
-                printf("\r\n Frecuencia mayor a referencia\n\r");
-                printf("\r\nAmplitud fundamental: %.2f Hz, : %i  \n\n", testOutput[testIndex], testIndex);
-            } else if ((1000*(testIndex+1))/1024 < testOutput[testIndex] - TOL) {
-            	// HAL_GPIO_WritePin(LED_GPIO_PORT, LED_HIGH_FREQ_PIN, GPIO_PIN_RESET);
-            	//HAL_GPIO_WritePin(LED_GPIO_PORT, LED_LOW_FREQ_PIN, GPIO_PIN_SET);
-                printf("\r\n Frecuencia menor a referencia\n\r");
-                printf("\r\nFrecuencia fundamental: %.2f Hz, f_ref: %i  \n\n", fundamental_freq, testOutput[testIndex]);
-            } else {
-            	//HAL_GPIO_WritePin(LED_GPIO_PORT, LED_HIGH_FREQ_PIN, GPIO_PIN_SET);
-            	//HAL_GPIO_WritePin(LED_GPIO_PORT, LED_LOW_FREQ_PIN, GPIO_PIN_SET);
-                printf("\r\n Frecuencia dentro de la tolerancia\n\r");
-                printf("\r\nFrecuencia fundamental: %.2f Hz, f_ref: %i  \n\n", fundamental_freq, testOutput[testIndex]);
-            }*/
-
-           HAL_Delay(1000);
-
-        //for(;;);
+              // Ciclar por las frecuencias de referencia
+              dataindex = 3;//(dataindex + 1) % 6;
+          }
       }
-    }
-    /* USER CODE END WHILE */
 
+      HAL_Delay(1000); // Espera para evitar desbordes
+  }
     /* USER CODE BEGIN 3 */
 
   /* USER CODE END 3 */
