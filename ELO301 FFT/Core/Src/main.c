@@ -36,13 +36,13 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define TEST_LENGTH_SAMPLES 2048
-#define TOL 2
+#define TOL 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 int dataindex=0;
-int data[6]= {100,200,300,400,500,600};
+int data[6]= {82,110,146,196,246,329};
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -166,41 +166,42 @@ if(HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1_filter0, (int32_t *)dfsdm_buffer, T
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  //HAL_ADC_Start_IT( &hadc1 );
+  while (1)
+  {
+	  if (mic_status == 1) {
+      // Procesar datos de la FFT
+      HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1_filter0, (int32_t *)dfsdm_buffer, TEST_LENGTH_SAMPLES / 2);
 
-  while (1) {
-      if (mic_status == 1) {
-          // Procesar datos de la FFT
-          HAL_DFSDM_FilterRegularStart_DMA(&hdfsdm1_filter0, (int32_t *)dfsdm_buffer, TEST_LENGTH_SAMPLES / 2);
-
-          for (int i = 0; i < (TEST_LENGTH_SAMPLES / 2); i++) {
-              mic_value = dfsdm_buffer[i];
-              testInput_f32_10khz[sample_counter++] = (float32_t)mic_value;
-              testInput_f32_10khz[sample_counter++] = 0;
-          }
-
-          mic_status = 0;
-
-          if (sample_counter >= TEST_LENGTH_SAMPLES) {
-              arm_cfft_f32(&arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse);
-              arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
-              arm_max_f32(testOutput + 1, (fftSize / 2) - 1, &maxValue, &testIndex);
-
-              uint32_t detectedFreq = (1000 * (testIndex + 1)) / 1024;
-              sample_counter = 0;
-
-              printf("Frecuencia referencia: %lu hz,  Frecuencia detectada: %lu Hz\r\n",data[dataindex], detectedFreq);
-
-              // Comparar con las frecuencias de referencia
-              checkFrequencyAndSetLEDs(detectedFreq, data[dataindex]);
-
-              // Ciclar por las frecuencias de referencia
-              dataindex = 3;//(dataindex + 1) % 6;
-          }
+      for (int i = 0; i < (TEST_LENGTH_SAMPLES / 2); i++) {
+          mic_value = dfsdm_buffer[i];
+          testInput_f32_10khz[sample_counter++] = (float32_t)mic_value;
+          testInput_f32_10khz[sample_counter++] = 0;
       }
 
-      HAL_Delay(1000); // Espera para evitar desbordes
+      mic_status = 0;
+
+      if (sample_counter >= TEST_LENGTH_SAMPLES) {
+          arm_cfft_f32(&arm_cfft_sR_f32_len1024, testInput_f32_10khz, ifftFlag, doBitReverse);
+          arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
+          arm_max_f32(testOutput + 1, (fftSize / 2) - 1, &maxValue, &testIndex);
+
+          uint32_t detectedFreq = (1000 * (testIndex + 1)) / 1024;
+          sample_counter = 0;
+
+          printf("Frecuencia referencia: %lu hz,  Frecuencia detectada: %lu Hz\r\n",data[dataindex], detectedFreq);
+
+          // Comparar con las frecuencias de referencia
+          checkFrequencyAndSetLEDs(detectedFreq, data[dataindex]);
+
+          // Ciclar por las frecuencias de referencia
+          //dataindex = 3;//(dataindex + 1) % 6;
+      }
   }
+
+  HAL_Delay(1000); // Espera para evitar desbordes
+}
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
 
   /* USER CODE END 3 */
@@ -471,6 +472,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED2_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
@@ -491,7 +496,12 @@ void HAL_DFSDM_FilterErrorCallback(DFSDM_Filter_HandleTypeDef *hdfsdm_filter) {
 	HAL_DFSDM_FilterGetRegularValue(&hdfsdm1_filter0,0);
 }
 
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+    if (GPIO_Pin == B1_Pin) { // Verifica si la interrupción es del botón
+        dataindex = (dataindex + 1) % 6; // Incrementa el índice y lo cicla entre 0 y 5
+        printf("�?ndice cambiado a: %d\r\n", dataindex);
+    }
+}
 
 /* Add _write function to print over the uart */
 int _write( int file, char *ptr, int len )
