@@ -49,7 +49,7 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32L4xx/Include"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.1\Drivers\CMSIS\DSP\Include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.613962683" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -60,7 +60,7 @@
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.1699523925" name="MCU GCC Linker" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script.1826722795" name="Linker Script (-T)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script" value="${workspace_loc:/${ProjName}/STM32L452RETX_FLASH.ld}" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories.964630151" name="Library search path (-L)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.0\Drivers\CMSIS\DSP\Lib\GCC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\alons\STM32Cube\Repository\STM32Cube_FW_L4_V1.18.1\Drivers\CMSIS\DSP\Lib\GCC&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.libraries.1539807906" name="Libraries (-l)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.libraries" valueType="libs">
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="arm_cortexM4lf_math"/>
@@ -188,12 +188,5 @@
 			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/ELO301 FFT"/>
-		</configuration>
-		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/ELO301 FFT"/>
-		</configuration>
-	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

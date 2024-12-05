@@ -16,6 +16,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dfsdm.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_cortex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_adc.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_adc.h \
@@ -29,11 +30,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
  ../Core/Inc/fft.h \
- C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_math.h \
+ C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../Drivers/CMSIS/Include/cmsis_compiler.h \
- C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_const_structs.h \
- C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_math.h \
- C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_common_tables.h
+ C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_const_structs.h \
+ C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_math.h \
+ C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_common_tables.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -52,6 +53,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_gpio_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dma.h:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_dfsdm.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_cortex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_adc.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_adc.h:
@@ -65,8 +67,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Core/Inc/fft.h:
-C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_math.h:
+C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
-C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_const_structs.h:
-C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_math.h:
-C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.0/Drivers/CMSIS/DSP/Include/arm_common_tables.h:
+C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_const_structs.h:
+C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_math.h:
+C:/Users/alons/STM32Cube/Repository/STM32Cube_FW_L4_V1.18.1/Drivers/CMSIS/DSP/Include/arm_common_tables.h:
