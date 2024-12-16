@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2024-11-07T07:35:10Z",
+        "GenerationSoftware": {
+            "Application": "Fusion Electronics",
+            "Vendor": "Autodesk",
+            "Version": "9.7.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "Placa de circuito impreso v10"
+        },
+        "Owner": "Patricio de la O <patricio.delao@sansano.usm.cl>",
+        "Size": {
+            "X": 70.06,
+            "Y": 59
+        }
+    }
+}
